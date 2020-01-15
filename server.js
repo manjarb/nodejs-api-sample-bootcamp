@@ -15,6 +15,9 @@ import { routes } from "./routes";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Body parser
+app.use(express.json());
+
 // Dev Logging
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
