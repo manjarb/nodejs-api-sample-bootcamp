@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
+import colors from "colors";
 import { connectDB } from "./config/db";
 
 dotenv.config({
@@ -24,12 +25,14 @@ routes(app);
 
 const server = app.listen(
   PORT,
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+  console.log(
+    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
+  )
 );
 
 // Handle unhandled promise Rejection
 process.on("unhandledRejection", (err, promise) => {
-  console.log(`Err: ${err.message}`);
+  console.log(`Err: ${err.message}`.red);
   server.close(() => {
     process.exit(1);
   });
