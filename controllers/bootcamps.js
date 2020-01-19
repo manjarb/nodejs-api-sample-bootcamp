@@ -1,4 +1,5 @@
 import { BootcampModel } from "../models/Bootcamp";
+import { ErrorResponse } from "../utils/errorResponse";
 
 // @access Public
 export async function getBootcamps(req, res, next) {
@@ -6,7 +7,7 @@ export async function getBootcamps(req, res, next) {
     const bootcamps = await BootcampModel.find();
     res.status(200).json({ success: true, data: bootcamps });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 }
 
@@ -16,12 +17,13 @@ export async function getBootcamp(req, res, next) {
     const bootcamp = await BootcampModel.findById(req.params.id);
 
     if (!bootcamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+      );
     }
 
     res.status(200).json({ success: true, data: bootcamp });
   } catch (error) {
-    // res.status(400).json({ success: false });
     next(error);
   }
 }
@@ -32,7 +34,7 @@ export async function createBootcamp(req, res, next) {
     const bootcamp = await BootcampModel.create(req.body);
     res.status(200).json({ success: true, data: bootcamp });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 }
 
@@ -50,11 +52,13 @@ export async function updateBootcamp(req, res, next) {
     );
 
     if (!bootcamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+      );
     }
     res.status(200).json({ success: true, data: bootcamp });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 }
 
@@ -64,10 +68,12 @@ export async function deleteBootcamp(req, res, next) {
     const bootcamp = await BootcampModel.findByIdAndDelete(req.params.id);
 
     if (!bootcamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
+      );
     }
     res.status(200).json({ success: true, data: {} });
   } catch (error) {
-    res.status(400).json({ success: false });
+    next(error);
   }
 }
