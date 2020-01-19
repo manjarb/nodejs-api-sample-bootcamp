@@ -2,13 +2,15 @@ import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import colors from "colors";
+
 import { connectDB } from "./config/db";
-import { routes } from "./routes";
 import { errorHandler } from "./middleware/error";
 
 dotenv.config({
   path: "./config/config.env"
 });
+
+const { routes } = require("./routes");
 
 connectDB();
 
