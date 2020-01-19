@@ -4,10 +4,13 @@ import {
   getBootcamp,
   createBootcamp,
   updateBootcamp,
-  deleteBootcamp
+  deleteBootcamp,
+  getBootcampsInRadius
 } from "../controllers/bootcamps";
 
 const bootcampRoutes = Router();
+
+bootcampRoutes.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
 
 bootcampRoutes
   .route("/")
