@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
-import colors from "colors";
+import "colors";
 
 import { connectDB } from "./config/db";
 import { errorHandler } from "./middleware/error";
