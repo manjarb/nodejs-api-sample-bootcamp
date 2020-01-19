@@ -14,13 +14,15 @@ export async function getBootcamps(req, res, next) {
 export async function getBootcamp(req, res, next) {
   try {
     const bootcamp = await BootcampModel.findById(req.params.id);
+
     if (!bootcamp) {
       return res.status(400).json({ success: false });
     }
 
     res.status(200).json({ success: true, data: bootcamp });
   } catch (error) {
-    res.status(400).json({ success: false });
+    // res.status(400).json({ success: false });
+    next(error);
   }
 }
 

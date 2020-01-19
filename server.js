@@ -3,14 +3,14 @@ import express from "express";
 import morgan from "morgan";
 import colors from "colors";
 import { connectDB } from "./config/db";
+import { routes } from "./routes";
+import { errorHandler } from "./middleware/error";
 
 dotenv.config({
   path: "./config/config.env"
 });
 
 connectDB();
-
-import { routes } from "./routes";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,6 +25,8 @@ if (process.env.NODE_ENV === "development") {
 
 // Routers
 routes(app);
+
+app.use(errorHandler);
 
 const server = app.listen(
   PORT,
