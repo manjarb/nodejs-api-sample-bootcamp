@@ -5,10 +5,32 @@ import { geocoder } from "../utils/geocoder";
 
 // @access Public
 export const getBootcamps = asyncHandler(async function(req, res, next) {
-  let queryStr = JSON.stringify(req.query);
+  const reqQuery = { ...req.query };
+
+  // Fields to exclude
+  const removeFields = ["select"];
+
+  // Loop over removeFields and delete them from reqQuery
+  removeFields.forEach(param => {
+    delete reqQuery[param];
+  });
+
+  // Create query String
+  let queryStr = JSON.stringify(reqQuery);
+
+  // Create Operators ($gt, $gte, etc) for Mongob search
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
 
-  const bootcamps = await BootcampModel.find(JSON.parse(queryStr));
+  // Finding Resource
+  let query = BootcampModel.find(JSON.parse(queryStr));
+
+  // Select Fields
+  if (req.query.select) {
+    const fields = req.query.select.split(",").join(" ");
+    query = query.select(fields);
+  }
+
+  const bootcamps = await query;
   res.status(200).json({ success: true, data: bootcamps });
 });
 
