@@ -3,6 +3,8 @@ import { ErrorResponse } from "../utils/errorResponse";
 import { asyncHandler } from "../middleware/async";
 import { geocoder } from "../utils/geocoder";
 
+// @desc      Get all bootcamps
+// @route     GET /api/v1/bootcamps
 // @access Public
 export const getBootcamps = asyncHandler(async function(req, res, next) {
   const reqQuery = { ...req.query };
@@ -75,6 +77,8 @@ export const getBootcamps = asyncHandler(async function(req, res, next) {
   });
 });
 
+// @desc      Get single bootcamp
+// @route     GET /api/v1/bootcamps/:id
 // @access Public
 export const getBootcamp = asyncHandler(async function(req, res, next) {
   const bootcamp = await BootcampModel.findById(req.params.id);
@@ -88,12 +92,16 @@ export const getBootcamp = asyncHandler(async function(req, res, next) {
   res.status(200).json({ success: true, data: bootcamp });
 });
 
+// @desc      Create new bootcamp
+// @route     POST /api/v1/bootcamps
 // @access Private
 export const createBootcamp = asyncHandler(async function(req, res, next) {
   const bootcamp = await BootcampModel.create(req.body);
   res.status(200).json({ success: true, data: bootcamp });
 });
 
+// @desc      Update bootcamp
+// @route     PUT /api/v1/bootcamps/:id
 // @access Private
 export const updateBootcamp = asyncHandler(async function(req, res, next) {
   const bootcamp = await BootcampModel.findByIdAndUpdate(
@@ -114,6 +122,8 @@ export const updateBootcamp = asyncHandler(async function(req, res, next) {
   res.status(200).json({ success: true, data: bootcamp });
 });
 
+// @desc      Delete bootcamp
+// @route     DELETE /api/v1/bootcamps/:id
 // @access Private
 export const deleteBootcamp = asyncHandler(async function(req, res, next) {
   const bootcamp = await BootcampModel.findByIdAndDelete(req.params.id);
@@ -126,6 +136,8 @@ export const deleteBootcamp = asyncHandler(async function(req, res, next) {
   res.status(200).json({ success: true, data: {} });
 });
 
+// @desc      Get bootcamps within a radius
+// @route     GET /api/v1/bootcamps/radius/:zipcode/:distance
 // @access Private
 export const getBootcampsInRadius = asyncHandler(async function(
   req,
