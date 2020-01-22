@@ -5,7 +5,10 @@ import { geocoder } from "../utils/geocoder";
 
 // @access Public
 export const getBootcamps = asyncHandler(async function(req, res, next) {
-  const bootcamps = await BootcampModel.find();
+  let queryStr = JSON.stringify(req.query);
+  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
+
+  const bootcamps = await BootcampModel.find(JSON.parse(queryStr));
   res.status(200).json({ success: true, data: bootcamps });
 });
 
@@ -77,9 +80,6 @@ export const getBootcampsInRadius = asyncHandler(async function(
   // Divide dist by radius of Earth
   // Earth Radius = 3,963 mi / 6,378 km
   const radius = distance / 3963;
-  console.log(lng, " :lng");
-  console.log(lat, " :lat");
-  console.log(radius, " :radius");
   const bootcamps = await BootcampModel.find({
     location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
   });
