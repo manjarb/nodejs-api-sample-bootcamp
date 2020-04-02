@@ -6,12 +6,20 @@ import {
   updateCourse,
   deleteCourse
 } from "../controllers/courses";
+import { advancedResults } from "../middleware/advancedResults";
+import { CourseModel } from "../models/Course";
 
 const courseRoutes = Router({ mergeParams: true });
 
 courseRoutes
   .route("/")
-  .get(getCourses)
+  .get(
+    advancedResults(CourseModel, {
+      path: "bootcamp",
+      select: "name description"
+    }),
+    getCourses
+  )
   .post(addCourse);
 
 courseRoutes

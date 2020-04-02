@@ -9,6 +9,8 @@ import {
   bootcampPhotoUpload
 } from "../controllers/bootcamps";
 import { courseRoutes } from "./courses";
+import { advancedResults } from "../middleware/advancedResults";
+import { BootcampModel } from "../models/Bootcamp";
 
 const bootcampRoutes = Router();
 
@@ -21,7 +23,7 @@ bootcampRoutes.route("/:id/photo").put(bootcampPhotoUpload);
 
 bootcampRoutes
   .route("/")
-  .get(getBootcamps)
+  .get(advancedResults(BootcampModel, "courses"), getBootcamps)
   .post(createBootcamp);
 
 bootcampRoutes
