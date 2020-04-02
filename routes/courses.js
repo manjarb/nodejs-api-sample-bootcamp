@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { getCourses, getCourse, addCourse } from "../controllers/courses";
+import {
+  getCourses,
+  getCourse,
+  addCourse,
+  updateCourse,
+  deleteCourse
+} from "../controllers/courses";
 
 const courseRoutes = Router({ mergeParams: true });
 
@@ -8,6 +14,10 @@ courseRoutes
   .get(getCourses)
   .post(addCourse);
 
-courseRoutes.route("/:id").get(getCourse);
+courseRoutes
+  .route("/:id")
+  .get(getCourse)
+  .put(updateCourse)
+  .delete(deleteCourse);
 
 export { courseRoutes };
