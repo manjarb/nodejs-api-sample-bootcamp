@@ -5,7 +5,8 @@ import {
   createBootcamp,
   updateBootcamp,
   deleteBootcamp,
-  getBootcampsInRadius
+  getBootcampsInRadius,
+  bootcampPhotoUpload
 } from "../controllers/bootcamps";
 import { courseRoutes } from "./courses";
 
@@ -15,6 +16,8 @@ const bootcampRoutes = Router();
 bootcampRoutes.use("/:bootcampId/courses", courseRoutes);
 
 bootcampRoutes.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
+
+bootcampRoutes.route("/:id/photo").put(bootcampPhotoUpload);
 
 bootcampRoutes
   .route("/")

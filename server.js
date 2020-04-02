@@ -1,7 +1,9 @@
+import path from "path";
 import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import "colors";
+import fileupload from "express-fileupload";
 
 import { connectDB } from "./config/db";
 import { errorHandler } from "./middleware/error";
@@ -24,6 +26,12 @@ app.use(express.json());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+// File uploading
+app.use(fileupload());
+
+// Set static folder
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routers
 routes(app);
