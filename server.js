@@ -4,12 +4,13 @@ import express from "express";
 import morgan from "morgan";
 import "colors";
 import fileupload from "express-fileupload";
+import cookieParser from "cookie-parser";
 
 import { connectDB } from "./config/db";
 import { errorHandler } from "./middleware/error";
 
 dotenv.config({
-  path: "./config/config.env"
+  path: "./config/config.env",
 });
 
 const { routes } = require("./routes");
@@ -21,6 +22,9 @@ const PORT = process.env.PORT || 5000;
 
 // Body parser
 app.use(express.json());
+
+// Cookie parser
+app.use(cookieParser());
 
 // Dev Logging
 if (process.env.NODE_ENV === "development") {

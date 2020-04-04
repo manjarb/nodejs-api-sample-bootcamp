@@ -4,10 +4,11 @@ import {
   getCourse,
   addCourse,
   updateCourse,
-  deleteCourse
+  deleteCourse,
 } from "../controllers/courses";
 import { advancedResults } from "../middleware/advancedResults";
 import { CourseModel } from "../models/Course";
+import { protect, authorize } from "../middleware/auth";
 
 const courseRoutes = Router({ mergeParams: true });
 
@@ -16,16 +17,16 @@ courseRoutes
   .get(
     advancedResults(CourseModel, {
       path: "bootcamp",
-      select: "name description"
+      select: "name description",
     }),
     getCourses
   )
-  .post(addCourse);
+  .post(protect, authorize("publisher", "admin"), addCourse);
 
 courseRoutes
   .route("/:id")
   .get(getCourse)
-  .put(updateCourse)
-  .delete(deleteCourse);
+  .put(protect, updateCourse)
+  .delete(protect, authorize("publisher", "admin"), deleteCourse);
 
 export { courseRoutes };

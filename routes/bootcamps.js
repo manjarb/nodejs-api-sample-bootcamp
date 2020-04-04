@@ -6,11 +6,12 @@ import {
   updateBootcamp,
   deleteBootcamp,
   getBootcampsInRadius,
-  bootcampPhotoUpload
+  bootcampPhotoUpload,
 } from "../controllers/bootcamps";
 import { courseRoutes } from "./courses";
 import { advancedResults } from "../middleware/advancedResults";
 import { BootcampModel } from "../models/Bootcamp";
+import { protect, authorize } from "../middleware/auth";
 
 const bootcampRoutes = Router();
 
@@ -19,17 +20,19 @@ bootcampRoutes.use("/:bootcampId/courses", courseRoutes);
 
 bootcampRoutes.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
 
-bootcampRoutes.route("/:id/photo").put(bootcampPhotoUpload);
+bootcampRoutes
+  .route("/:id/photo")
+  .put(protect, authorize("publisher", "admin"), bootcampPhotoUpload);
 
 bootcampRoutes
   .route("/")
   .get(advancedResults(BootcampModel, "courses"), getBootcamps)
-  .post(createBootcamp);
+  .post(protect, authorize("publisher", "admin"), createBootcamp);
 
 bootcampRoutes
   .route("/:id")
   .get(getBootcamp)
-  .put(updateBootcamp)
-  .delete(deleteBootcamp);
+  .put(protect, authorize("publisher", "admin"), updateBootcamp)
+  .delete(protect, authorize("publisher", "admin"), deleteBootcamp);
 
 export { bootcampRoutes };
