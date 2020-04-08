@@ -12,11 +12,13 @@ import { courseRoutes } from "./courses";
 import { advancedResults } from "../middleware/advancedResults";
 import { BootcampModel } from "../models/Bootcamp";
 import { protect, authorize } from "../middleware/auth";
+import { reviewRoutes } from "./review";
 
 const bootcampRoutes = Router();
 
 // Re-route into other resource routers
 bootcampRoutes.use("/:bootcampId/courses", courseRoutes);
+bootcampRoutes.use("/:bootcampId/reviews", reviewRoutes);
 
 bootcampRoutes.route("/radius/:zipcode/:distance").get(getBootcampsInRadius);
 

@@ -3,7 +3,7 @@ import { ErrorResponse } from "../utils/errorResponse";
 export function errorHandler(err, req, res, next) {
   let error = {
     ...err,
-    message: err.message
+    message: err.message,
   };
 
   // Log to console for dev
@@ -11,7 +11,7 @@ export function errorHandler(err, req, res, next) {
 
   // Mongoose bad ObjectId
   if (err.name === "CastError") {
-    const message = `Bootcamp not found with id of ${err.value}`;
+    const message = `Resource not found`;
     error = new ErrorResponse(message, 404);
   }
 
@@ -23,12 +23,12 @@ export function errorHandler(err, req, res, next) {
 
   // Mongoose validation error
   if (err.name === "ValidationError") {
-    const message = Object.values(error.errors).map(val => val.message);
+    const message = Object.values(error.errors).map((val) => val.message);
     error = new ErrorResponse(message, 400);
   }
 
   res.status(error.statusCode || 500).json({
     success: false,
-    error: error.message || "Server error"
+    error: error.message || "Server error",
   });
 }
